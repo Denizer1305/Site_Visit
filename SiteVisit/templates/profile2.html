@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {{ super() }}
+<div class="wrapper">
+      <div class="profile-card">
+          <div class="profile-header">
+              <img src="{{ url_for('static', filename='img/fon.jpg') }}" alt="">
+          </div>
+          <div class="profile-body">
+                <div class="author-img">
+                    <img src="{{url_for('userava')}}" alt="Photo">
+                </div>
+                <div class="name">{{session.firstname}} {{session.lastname}}</div>
+                <div class="intro">
+                    <p class="job_title">{{session.profession}}
+                   </p>
+                   <p>{{session.about}}
+                   </p>
+                </div>
+              <div class="icons social-icon">
+        {% for social in session.social%}
+        <button>
+          <ion-icon name="logo-{{social.name}}" onclick="location.href='{{social.url}}'"></ion-icon>
+        </button>
+        {%endfor%}
+      </div>
+          </div>
+      </div>
+
+
+  </div>
+
+{% endblock %}

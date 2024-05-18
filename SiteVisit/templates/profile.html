@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {{ super() }}
+
+
+<section>
+
+  <div class="box1 box">
+    <div class="content">
+      <div class="image">
+        <img src="{{url_for('userava')}}" alt="Profile Image">
+      </div>
+      <div class="level">
+        <p>PRO</p>
+      </div>
+      <div class="text">
+        <p class="name">{{session.firstname}} {{session.lastname}}</p>
+        <p class="job_title">{{session.profession}}</p>
+        <p class="job_discription">{{session.about}}</p>
+      </div>
+      <div class="icons">
+        {% for social in session.social%}
+        <button>
+          <ion-icon name="logo-{{social.name}}" onclick="location.href='{{social.url}}'"></ion-icon>
+        </button>
+        {%endfor%}
+      </div>
+      <div class="button">
+        <div>
+          <button class="message" type="button" onclick="location.href='mailto:{{session.email}}'">Message</button>
+        </div>
+        <div>
+          <button class="connect" type="button" onclick="location.href='tel:+7{{session.phone}}'">Connect</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+{% endblock %}

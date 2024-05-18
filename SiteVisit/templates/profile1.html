@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {{ super() }}
+
+  <div class="card">
+      <div class="card-header" style="background-image: url({{url_for('userava')}})">
+            <div class="card-header-slanted-edge">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 200"><path class="polygon" d="M-20,200,1000,0V200Z" /></svg>
+            </div>
+      </div>
+      <div class="card-body">
+          <h2 class="name">{{session.firstname}} {{session.lastname}}</h2>
+          <h4 class="job-title">{{session.profession}}</h4>
+          <div class="bio">{{session.about}}</div>
+          <div class="icons">
+            {% for social in session.social%}
+            <button>
+              <ion-icon name="logo-{{social.name}}" onclick="location.href='{{social.url}}'"></ion-icon>
+            </button>
+            {%endfor%}
+          </div>
+      </div>
+      <div class="card-footer">
+          <div class="button">
+              <div>
+                  <button class="message" type="button" onclick="location.href='mailto:{{session.email}}'">Message</button>
+              </div>
+              <div>
+                  <button class="connect" type="button" onclick="location.href='tel:+7{{session.phone}}'">Connect</button>
+              </div>
+          </div>
+      </div>
+  </div>
+
+
+{% endblock %}

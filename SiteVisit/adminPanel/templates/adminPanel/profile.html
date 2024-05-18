@@ -1,0 +1,203 @@
+{% extends 'adminPanel/base.html' %}
+{% block content %}
+{{ super() }}
+
+{% for cat,msg in get_flashed_messages(True) %}
+<div class="flash {{cat}}">{{msg}}</div>
+{% endfor %}
+
+<div class="container rounded bg-white mt-5 mb-5">
+    <form action="./" method="post" enctype="multipart/form-data">
+        {{form.hidden_tag()}}
+        <div class="row">
+            <div class="py-3 mt-3">
+                <h4 class="text-center">Ваш профиль</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 border-right">
+                <div class="d-flex flex-column align-items-center text-center p-3 py-2">
+                    {%if form.avatar.errors%}
+                    {{form.avatar(class_="form-control invalid")}}
+                    <p class="invalid-feedback">
+                        {% for e in form.avatar.errors%}
+                        {{e}}
+                        {%endfor%}
+                    </p>
+                    {% else%}
+                    {%if profile.avatar == None%}
+                    <img class="rounded-circle mt-5" width="150px" style="cursor: pointer;"
+                        src="{{url_for('static', filename='/img/profile-image.jpg')}}" onclick='avatar.click()'>
+                    {% else%}
+                    <img class="rounded-circle mt-5" width="150px" style="cursor: pointer;"
+                        src="{{url_for('.userava')}}" onclick='avatar.click()'>
+                    {%endif%}
+                    {{form.avatar(class_="form-control", style_="display:none")}}
+                    {%endif%}
+                    <span class="font-weight-bold">{{profile.user_name}}</span>
+                    <span class="text-black-50">{{profile.email}}</span>
+                    <span> </span>
+                </div>
+            </div>
+            <div class="col-md-5 border-right">
+                <div class="p-3 py-2">
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            {{form.name.label(class_="labels")}}
+                            {%if form.name.errors%}
+                            {{form.name(class_="form-control invalid")}}
+                                <ul class="invalid-feedback">
+                                    {% for e in form.name.errors%}
+                                        <li class="form-control invalid">
+                                            {{e}}
+                                        </li>
+                                    {%endfor%}
+                                </ul>
+                            {% else%}
+                            {%if profile.name == None%}
+                            {{form.name(class_="form-control", placeholder=form.name.description)}}
+                            {%else%}
+                            {{form.name(class_="form-control", placeholder=form.name.description, value=profile.name)}}
+                            {%endif%}
+                            {%endif%}
+                        </div>
+                        <div class="col-md-6">
+                            {{form.surname.label(class_="labels")}}
+                            {%if form.surname.errors%}
+                                {{form.surname(class_="form-control invalid")}}
+                                <ul class="invalid-feedback">
+                                    {% for e in form.surname.errors%}
+                                        <li class="form-control invalid">
+                                            <p>{{e}}
+                                        </li>
+                                    {%endfor%}
+                                </ul>
+                            {% else%}
+                                {%if profile.surname == None%}
+                                    {{form.surname(class_="form-control", placeholder=form.surname.description)}}
+                                {%else%}
+                                    {{form.surname(class_="form-control", placeholder=form.surname.description,
+                                    value=profile.surname)}}
+                                {%endif%}
+                            {%endif%}
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            {{form.phone.label(class_="labels")}}
+                            {%if form.phone.errors%}
+                            {{form.phone(class_="form-control")}}
+                             <ul class="invalid-feedback">
+                                    {% for e in form.phone.errors%}
+                                        <li class="form-control invalid">
+                                            <p>{{e}}
+                                        </li>
+                                    {%endfor%}
+                                </ul>
+                            {% else%}
+                            {%if profile.phone == None%}
+                            {{form.phone(class_="form-control", placeholder=form.phone.description)}}
+                            {% else%}
+                            {{form.phone(class_="form-control", placeholder=form.phone.description,
+                            value=profile.phone)}}
+                            {%endif%}
+                            {%endif%}
+                        </div>
+                        <div class="col-md-12">
+                            {{form.profession.label(class_="labels")}}
+                            {%if form.profession.errors%}
+                            {{form.profession(class_="form-control invalid")}}
+                                <ul class="invalid-feedback">
+                                    {% for e in form.profession.errors%}
+                                        <li class="form-control invalid">
+                                            <p>{{e}}
+                                        </li>
+                                    {%endfor%}
+                                </ul>
+                            {% else%}
+                            {%if profile.profession == None%}
+                            {{form.profession(class_="form-control", placeholder=form.profession.description)}}
+                            {% else%}
+                            {{form.profession(class_="form-control", placeholder=form.profession.description,
+                            value=profile.profession)}}
+                            {%endif%}
+                            {%endif%}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 border-right">
+                <div class="p-3 py-2">
+                    {%for field_logo in form if field_logo.name in ["logo1","logo2","logo3"]%}
+                        <div class="row">
+                            <div class="col-md-4 border-right">
+                                <div class="col-md-12">
+                                    {{field_logo.label(class_="labels")}}
+                                    {%if field_logo.errors%}
+                                    {{field_logo(class_="invalid")}}
+                                    <ul class="invalid-feedback">
+                                        {% for e in field_logo.errors%}
+                                            <li class="form-control invalid">
+                                                <p>{{e}}
+                                            </li>
+                                        {%endfor%}
+                                    </ul>
+                                    {% else%}
+                                    {{field_logo(class_="form-control")}}
+                                    {%for elem in social if elem.log_num==field_logo.name%}
+                                    <script>
+                                        document.querySelector('[name={{field_logo.name}}]').value = '{{elem.name}}';
+                                    </script>
+                                    {%endfor%}
+                                    {%endif%}
+                                </div>
+                            </div>
+                                {%for field_url in form if field_url.name in ["url1","url2","url3"]%}
+                                    {%if field_logo.name[-1]==field_url.name[-1]%}
+                                    <div class="col-md-8 border-right">
+                                        <div class="col-md-12">
+                                            {{field_url.label(class_="labels")}}
+                                            {%if field_url.errors%}
+                                                {{field_url(class_="form-control")}}
+                                                <ul class="invalid-feedback">
+                                                    {% for e in form.surname.errors%}
+                                                        <li class="form-control invalid">
+                                                            <p>{{e}}
+                                                        </li>
+                                                    {%endfor%}
+                                                </ul>
+                                            {% else%}
+                                                {{field_url(class_="form-control", placeholder=field_url.description)}}
+                                            {%endif%}
+                                            {%for elem in social if elem.name_url==field_url.name%}
+                                                <script>
+                                                    document.querySelector('[name={{field_url.name}}]').value = '{{elem.url}}';
+                                                </script>
+                                            {%endfor%}
+                                        </div>
+                                    </div>
+                                    {%endif%}
+                                {%endfor%}
+                        </div>
+                    {%endfor%}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-5 border-right">
+                <div class="p-3 py-2">
+                    <div class="mt-5 text-center">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-bs-toggle="modal"
+                            data-bs-target="#AuthorizationModal">Удалить профиль</button>
+                        {{form.submit(class_="btn btn-primary profile-button")}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
